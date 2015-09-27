@@ -12,6 +12,12 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import java.io.*;
+
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Bitmap.CompressFormat;
+import android.os.Environment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,11 +31,10 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         IMG = (ImageView)findViewById(R.id.IMG);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                 /* Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show(); */
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 if(i.resolveActivity(getPackageManager())!=null)
                 {
@@ -46,17 +51,35 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    String mCurrentPhotoPath;
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "JPEG_";
+        File storageDir = Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+        return image;
+    }
+
+
+
+//thumbnail
     public void onActivityResult(int requestcode, int resultcode, Intent data){
-        if(requestcode==REQUEST_CODE)
+        if(requestcode==REQUEST_CODE && resultcode==RESULT_OK)
         {
-            if(resultcode==RESULT_OK)
-            {
                 Bundle bundle = new Bundle();
                 bundle = data.getExtras();
                 Bitmap BMP;
                 BMP = (Bitmap)bundle.get("data");
                 IMG.setImageBitmap(BMP);
-            }
         }
     }
 

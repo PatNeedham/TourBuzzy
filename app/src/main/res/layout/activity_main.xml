@@ -32,7 +32,7 @@
 
     <Button android:layout_height="wrap_content"
         android:src="@android:drawable/ic_menu_manage"
-        android:onClick="goButtonClicked" android:id="@+id/goButton"
+        android:id="@+id/send"
         android:textColor="#fff"
         android:textColorHighlight="#000"
         android:textSize="40sp"
